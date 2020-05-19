@@ -87,11 +87,11 @@ def create_callbacks(training_model, prediction_model, validation_generator, arg
 
     if args.evaluation and validation_generator:
         if args.dataset_type == 'coco':
-            from eval.coco import Evaluate
+            from .eval.coco import Evaluate
             # use prediction model for evaluation
             evaluation = Evaluate(validation_generator, prediction_model, tensorboard=tensorboard_callback)
         else:
-            from eval.pascal import Evaluate
+            from .eval.pascal import Evaluate
             evaluation = Evaluate(validation_generator, prediction_model, tensorboard=tensorboard_callback)
         callbacks.append(evaluation)
 
@@ -151,7 +151,7 @@ def create_generators(args):
         visual_effect = None
 
     if args.dataset_type == 'pascal':
-        from generators.pascal import PascalVocGenerator
+        from .generators.pascal import PascalVocGenerator
         train_generator = PascalVocGenerator(
             args.pascal_path,
             'trainval',
@@ -169,7 +169,7 @@ def create_generators(args):
             **common_args
         )
     elif args.dataset_type == 'csv':
-        from generators.csv_ import CSVGenerator
+        from .generators.csv_ import CSVGenerator
         train_generator = CSVGenerator(
             args.annotations_path,
             args.classes_path,
@@ -189,7 +189,7 @@ def create_generators(args):
             validation_generator = None
     elif args.dataset_type == 'coco':
         # import here to prevent unnecessary dependency on cocoapi
-        from generators.coco import CocoGenerator
+        from .generators.coco import CocoGenerator
         train_generator = CocoGenerator(
             args.coco_path,
             'train2017',
